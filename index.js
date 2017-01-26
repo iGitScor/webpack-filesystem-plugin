@@ -13,9 +13,12 @@ module.exports = class Filesystem {
 
       // Optional parameters
       this.buildTrigger = options.buildTrigger || 'after-emit';
+      this.silent = options.silent || true;
+      this.verbose = !this.silent;
     } else {
       // Throw exception
-      const error = Filesystem.hasRequiredParameters(options)
+      const error = typeof options === 'object' &&
+      Filesystem.hasRequiredParameters(options)
         ? 'Parameters are invalid'
         : 'Required parameters are missing';
 
@@ -24,10 +27,16 @@ module.exports = class Filesystem {
   }
 
   static hasRequiredParameters(options) {
-    return options.action && options.source && options.dist;
+    return Object.hasOwnProperty.call(options, 'action') &&
+      Object.hasOwnProperty.call(options, 'source') &&
+      Object.hasOwnProperty.call(options, 'dist');
   }
 
   static hasValidOptions(options) {
+    if (typeof options !== 'object') {
+      return false;
+    }
+
     return Filesystem.hasRequiredParameters(options) &&
       (validAction.indexOf(options.action) >= 0 ||
         !Object.hasOwnProperty.call(options, 'action')) &&
@@ -42,13 +51,19 @@ module.exports = class Filesystem {
           throw exception;
         }
       });
-    } else {
+
+      return true;
+    }
+
+    if (this.verbose) {
       // Display replacement patterns
       const fileNotExist = '\x1B[34mFile not found (%s)\x1B[0m';
 
       // eslint-disable-next-line no-console
       console.warn(fileNotExist, this.source);
     }
+
+    return false;
   }
 
   apply(compiler) {
