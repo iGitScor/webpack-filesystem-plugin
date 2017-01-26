@@ -24,7 +24,11 @@ Add the plugin to your plugin list
 ```javascript
 var config = {
   plugins: [
-    new WebpackFilesystem()
+    new WebpackFilesystem({
+      action: 'cp',
+      source: 'test.txt',
+      dist: 'awesome.txt',
+    })
   ]
 }
 ```
