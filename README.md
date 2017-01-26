@@ -3,6 +3,7 @@
 Filesystem wrapper
 
 [![Build Status][build-badge]][build]
+[![codecov][codecoverage-badge]][codecoverage]
 [![Dependencies][dependencyci-badge]][dependencyci]
 [![dependencies Status][dependencies-badge]][dependencies]
 [![devDependencies Status][devDependencies-badge]][devDependencies]
@@ -49,6 +50,19 @@ var config = {
   - `done`
   - `failed`
 
+Use silent mode
+```javascript
+var config = {
+  plugins: [
+    new WebpackFilesystem({
+      silent: true,
+      action: 'cp',
+      source: 'test.txt',
+      dist: 'awesome.txt',
+    })
+  ]
+}
+```
 
 ### Contributing
 
@@ -56,6 +70,8 @@ All contributions are welcome. Please make a pull request and make sure things s
 
 [build-badge]: https://img.shields.io/travis/iGitScor/webpack-filesystem-plugin.svg?style=flat-square
 [build]: https://travis-ci.org/iGitScor/webpack-filesystem-plugin
+[codecoverage-badge]: https://codecov.io/gh/iGitScor/webpack-filesystem-plugin/branch/master/graph/badge.svg?style=flat-square
+[codecoverage]: https://codecov.io/gh/iGitScor/webpack-filesystem-plugin
 [dependencyci-badge]: https://dependencyci.com/github/iGitScor/webpack-filesystem-plugin/badge?style=flat-square
 [dependencyci]: https://dependencyci.com/github/iGitScor/webpack-filesystem-plugin
 [dependencies-badge]: https://david-dm.org/iGitScor/webpack-filesystem-plugin/status.svg?style=flat-square
