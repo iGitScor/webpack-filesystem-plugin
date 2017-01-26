@@ -2,6 +2,7 @@ const fs = require('fs');
 const childProcess = require('child_process');
 
 const validAction = ['cp'];
+const validBuildTrigger = ['after-emit', 'done', 'failed'];
 
 module.exports = class Filesystem {
   constructor(options) {
@@ -9,6 +10,9 @@ module.exports = class Filesystem {
       this.action = options.action;
       this.source = options.source;
       this.dist = options.dist;
+
+      // Optional parameters
+      this.buildTrigger = options.buildTrigger || 'after-emit';
     } else {
       // Throw exception
       const error = Filesystem.hasRequiredParameters(options)
@@ -26,7 +30,9 @@ module.exports = class Filesystem {
   static hasValidOptions(options) {
     return Filesystem.hasRequiredParameters(options) &&
       (validAction.indexOf(options.action) >= 0 ||
-        !Object.hasOwnProperty.call(options, 'action'));
+        !Object.hasOwnProperty.call(options, 'action')) &&
+      (validBuildTrigger.indexOf(options.buildTrigger) >= 0 ||
+        !Object.hasOwnProperty.call(options, 'buildTrigger'));
   }
 
   copy() {
@@ -47,7 +53,7 @@ module.exports = class Filesystem {
 
   apply(compiler) {
     const that = this;
-    compiler.plugin('after-emit', (compilation, callback) => {
+    compiler.plugin(this.buildTrigger, (compilation, callback) => {
       that.copy();
       callback();
     });
