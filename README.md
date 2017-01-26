@@ -33,6 +33,20 @@ var config = {
 }
 ```
 
+### Options
+
+#### Actions
+
+- [cp](docs/cp.md): Copy files or directories
+
+#### Common options
+
+- `buildTrigger` _(string)_: Webpack build step (c.f [plugin documentation](https://webpack.github.io/docs/plugins.html)). See below accepted steps:
+  - `after-emit`
+  - `done`
+  - `failed`
+
+
 ### Contributing
 
 All contributions are welcome. Please make a pull request and make sure things still pass after running `npm test`
