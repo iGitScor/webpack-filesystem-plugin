@@ -17,10 +17,9 @@ module.exports = class Filesystem {
       this.verbose = !this.silent;
     } else {
       // Throw exception
-      const error = typeof options === 'object' &&
-      Filesystem.hasRequiredParameters(options)
-        ? 'Parameters are invalid'
-        : 'Required parameters are missing';
+      const error = typeof options === 'object'
+        ? 'Required parameters are missing'
+        : 'Parameters are invalid';
 
       throw new Error(error);
     }
@@ -38,32 +37,25 @@ module.exports = class Filesystem {
     }
 
     return Filesystem.hasRequiredParameters(options) &&
-      (validAction.indexOf(options.action) >= 0 ||
-        !Object.hasOwnProperty.call(options, 'action')) &&
-      (validBuildTrigger.indexOf(options.buildTrigger) >= 0 ||
-        !Object.hasOwnProperty.call(options, 'buildTrigger'));
+      (!Object.hasOwnProperty.call(options, 'action') ||
+        validAction.indexOf(options.action) >= 0) &&
+      (!Object.hasOwnProperty.call(options, 'buildTrigger') ||
+        validBuildTrigger.indexOf(options.buildTrigger) >= 0);
   }
 
   copy() {
     if (fs.existsSync(this.source)) {
-      childProcess.exec(`${this.action} ${this.source} ${this.dist}`, (exception) => {
-        if (exception) {
-          throw exception;
-        }
-      });
+      const spawn = childProcess.spawnSync(this.action, [this.source, this.dist]);
+      const errorText = spawn.stderr.toString().trim();
+
+      if (errorText) {
+        throw new Error('Command failed');
+      }
 
       return true;
     }
 
-    if (this.verbose) {
-      // Display replacement patterns
-      const fileNotExist = '\x1B[34mFile not found (%s)\x1B[0m';
-
-      // eslint-disable-next-line no-console
-      console.warn(fileNotExist, this.source);
-    }
-
-    return false;
+    throw new Error('File not found');
   }
 
   apply(compiler) {

@@ -12,19 +12,40 @@ const options = {
 const invalidOptionsType = '';
 const invalidOptionsObj = {};
 
+// Webpack plugin mock
+const compiler = {
+  plugin: (buildTrigger, callback) => {
+    callback(null, () => {});
+  },
+};
+
 describe('Filesystem plugin', () => {
+  beforeEach(() => {
+    // runs before each test in this block
+    filesystemWrapper = new Filesystem(options);
+  });
+
   it('should be instantiated', () => {
     filesystemWrapper = new Filesystem(options);
     expect(typeof filesystemWrapper).to.equal('object');
   });
 
-  it('should throw error', () => {
+  it('should throw error when no parameters', () => {
     const noParamConstructor = function () {
       // eslint-disable-next-line no-new
       new Filesystem();
     };
 
-    expect(noParamConstructor).to.throwException();
+    expect(noParamConstructor).to.throwException(/Parameters are invalid/);
+  });
+
+  it('should throw error when parameter format is wrong', () => {
+    const wrongParamConstructor = function () {
+      // eslint-disable-next-line no-new
+      new Filesystem({});
+    };
+
+    expect(wrongParamConstructor).to.throwException(/Required parameters are missing/);
   });
 
   it('should have default options', () => {
@@ -37,8 +58,10 @@ describe('Filesystem plugin', () => {
     expect(Filesystem.hasValidOptions(options)).to.equal(true);
   });
 
-  it('should detect invalid options (string)', () => {
+  it('should detect invalid options', () => {
     expect(Filesystem.hasValidOptions(invalidOptionsType)).to.equal(false);
+    expect(Filesystem.hasValidOptions({ buildTrigger: 'after-emit' })).to.equal(false);
+    expect(Filesystem.hasValidOptions({ action: 'cp', buildTrigger: 'none' })).to.equal(false);
   });
 
   it('should have required parameters', () => {
@@ -50,13 +73,27 @@ describe('Filesystem plugin', () => {
   });
 
   it('should detect missing file', () => {
-    expect(filesystemWrapper.copy()).to.equal(false);
+    const copy = function () {
+      filesystemWrapper.copy();
+    };
+
+    expect(copy).to.throwException(/File not found/);
   });
 
-  it('should copy file', () => {
-    filesystemWrapper.source = 'test/test.txt';
-    expect(filesystemWrapper.copy()).to.equal(true);
+  it('should throw exception if the command fail', () => {
+    const copy = function () {
+      filesystemWrapper.copy();
+    };
 
-    // expect(fs.existsSync(filesystemWrapper.dist)).to.equal(true);
+    filesystemWrapper.dist = 'tmp/test.txt';
+    filesystemWrapper.source = 'test/test.txt';
+
+    expect(copy).to.throwException(/Command fail/);
+  });
+
+  it('should apply compiler (webpack-mock)', () => {
+    filesystemWrapper.source = 'test/test.txt';
+    filesystemWrapper.dist = 'test/tmp.txt';
+    filesystemWrapper.apply(compiler);
   });
 });
