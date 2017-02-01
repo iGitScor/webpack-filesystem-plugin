@@ -37,16 +37,16 @@ module.exports = class Filesystem {
     }
 
     return Filesystem.hasRequiredParameters(options) &&
-      (!Object.hasOwnProperty.call(options, 'action')) ||
-        validAction.indexOf(options.action) >= 0 &&
+      (!Object.hasOwnProperty.call(options, 'action') ||
+        validAction.indexOf(options.action) >= 0) &&
       (!Object.hasOwnProperty.call(options, 'buildTrigger') ||
         validBuildTrigger.indexOf(options.buildTrigger) >= 0);
   }
 
   copy() {
     if (fs.existsSync(this.source)) {
-      var spawn = childProcess.spawnSync(this.action, [this.source, this.dist]);
-      var errorText = spawn.stderr.toString().trim();
+      const spawn = childProcess.spawnSync(this.action, [this.source, this.dist]);
+      const errorText = spawn.stderr.toString().trim();
 
       if (errorText) {
         throw new Error('Command failed');
