@@ -1,6 +1,6 @@
 {
   "name": "webpack-filesystem-plugin",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Filesystem wrapper in webpack workflow",
   "main": "index.js",
   "scripts": {
