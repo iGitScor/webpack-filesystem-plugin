@@ -9,6 +9,10 @@ const options = {
   dist: 'tmp/test.txt',
 };
 
+// Duplicate options to add all the entries
+const allOptions = JSON.parse(JSON.stringify(options));
+allOptions.buildTrigger = 'after-emit';
+
 const invalidOptionsType = '';
 const invalidOptionsObj = {};
 
@@ -21,11 +25,10 @@ const compiler = {
 
 describe('Filesystem plugin', () => {
   beforeEach(() => {
-    // runs before each test in this block
     filesystemWrapper = new Filesystem(options);
   });
 
-  it('should be instantiated', () => {
+  it('can be instantiated', () => {
     filesystemWrapper = new Filesystem(options);
     expect(typeof filesystemWrapper).to.equal('object');
   });
@@ -54,8 +57,9 @@ describe('Filesystem plugin', () => {
     expect(filesystemWrapper.verbose).to.equal(false);
   });
 
-  it('should have valid options', () => {
+  it('should validate options', () => {
     expect(Filesystem.hasValidOptions(options)).to.equal(true);
+    expect(Filesystem.hasValidOptions(allOptions)).to.equal(true);
   });
 
   it('should detect invalid options', () => {
@@ -64,7 +68,7 @@ describe('Filesystem plugin', () => {
     expect(Filesystem.hasValidOptions({ action: 'cp', buildTrigger: 'none' })).to.equal(false);
   });
 
-  it('should have required parameters', () => {
+  it('should validate required parameters', () => {
     expect(Filesystem.hasRequiredParameters(options)).to.equal(true);
   });
 
