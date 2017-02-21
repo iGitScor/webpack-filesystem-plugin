@@ -15,13 +15,6 @@ allOptions.buildTrigger = 'after-emit';
 const invalidOptionsType = '';
 const invalidOptionsObj = {};
 
-// Webpack plugin mock
-const compiler = {
-  plugin: (buildTrigger, callback) => {
-    callback(null, () => {});
-  },
-};
-
 describe('Filesystem plugin', () => {
   beforeEach(() => {
     filesystemWrapper = new Filesystem(options);

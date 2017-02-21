@@ -8,13 +8,6 @@ const options = {
   source: 'test/test-invalid.txt',
 };
 
-// Duplicate options to add all the entries
-const allOptions = JSON.parse(JSON.stringify(options));
-allOptions.buildTrigger = 'after-emit';
-
-const invalidOptionsType = '';
-const invalidOptionsObj = {};
-
 // Webpack plugin mock
 const compiler = {
   plugin: (buildTrigger, callback) => {
