@@ -79,5 +79,5 @@ All contributions are welcome. Please make a pull request and make sure things s
 [dependencies]: https://david-dm.org/iGitScor/webpack-filesystem-plugin
 [devDependencies-badge]: https://david-dm.org/iGitScor/webpack-filesystem-plugin/dev-status.svg?style=flat-square
 [devDependencies]: https://david-dm.org/iGitScor/webpack-filesystem-plugin?type=dev
-[license-badge]: https://img.shields.io/apm/l/prettier-eslint.svg?style=flat-square
+[license-badge]: https://img.shields.io/apm/l/webpack-filesystem-plugin.svg?style=flat-square
 [license]: https://github.com/iGitScor/webpack-filesystem-plugin/blob/master/LICENSE
