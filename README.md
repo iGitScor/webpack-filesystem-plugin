@@ -41,6 +41,7 @@ var config = {
 #### Actions
 
 - [cp](docs/cp.md): Copy files or directories
+- [rm](docs/rm.md): Remove files or directories
 
 #### Common options
 

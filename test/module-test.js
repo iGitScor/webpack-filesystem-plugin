@@ -5,8 +5,7 @@ const expect = require('expect.js');
 let filesystemWrapper;
 const options = {
   action: 'cp',
-  source: 'test/test-invalid.txt',
-  dist: 'tmp/test.txt',
+  source: 'YY',
 };
 
 // Duplicate options to add all the entries
@@ -29,7 +28,6 @@ describe('Filesystem plugin', () => {
   });
 
   it('can be instantiated', () => {
-    filesystemWrapper = new Filesystem(options);
     expect(typeof filesystemWrapper).to.equal('object');
   });
 
@@ -65,7 +63,7 @@ describe('Filesystem plugin', () => {
   it('should detect invalid options', () => {
     expect(Filesystem.hasValidOptions(invalidOptionsType)).to.equal(false);
     expect(Filesystem.hasValidOptions({ buildTrigger: 'after-emit' })).to.equal(false);
-    expect(Filesystem.hasValidOptions({ action: 'cp', buildTrigger: 'none' })).to.equal(false);
+    expect(Filesystem.hasValidOptions({ action: 'XX', buildTrigger: 'none' })).to.equal(false);
   });
 
   it('should validate required parameters', () => {
@@ -74,30 +72,5 @@ describe('Filesystem plugin', () => {
 
   it('should detect missing required parameters', () => {
     expect(Filesystem.hasRequiredParameters(invalidOptionsObj)).to.equal(false);
-  });
-
-  it('should detect missing file', () => {
-    const copy = function () {
-      filesystemWrapper.copy();
-    };
-
-    expect(copy).to.throwException(/File not found/);
-  });
-
-  it('should throw exception if the command fail', () => {
-    const copy = function () {
-      filesystemWrapper.copy();
-    };
-
-    filesystemWrapper.dist = 'tmp/test.txt';
-    filesystemWrapper.source = 'test/test.txt';
-
-    expect(copy).to.throwException(/Command fail/);
-  });
-
-  it('should apply compiler (webpack-mock)', () => {
-    filesystemWrapper.source = 'test/test.txt';
-    filesystemWrapper.dist = 'test/tmp.txt';
-    filesystemWrapper.apply(compiler);
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "webpack-filesystem-plugin",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Filesystem wrapper in webpack workflow",
   "main": "index.js",
   "scripts": {
@@ -32,13 +32,13 @@
     "eslint-plugin-react": "6.9.x",
     "expect.js": "0.3.x",
     "istanbul": "0.4.x",
+    "lodash": "4.17.x",
     "mocha": "3.2.x"
   },
   "engines": {
     "node": ">=6"
   },
   "files": [
-    "index.js",
-    "README.md"
+    "index.js"
   ]
 }
