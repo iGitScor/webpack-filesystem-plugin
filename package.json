@@ -1,6 +1,6 @@
 {
   "name": "webpack-filesystem-plugin",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Filesystem wrapper in webpack workflow",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,9 @@
     "url": "https://github.com/iGitScor/webpack-filesystem-plugin/issues"
   },
   "homepage": "https://github.com/iGitScor/webpack-filesystem-plugin#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
   "devDependencies": {
     "codecov": "1.0.x",
     "eslint": "3.14.x",
@@ -38,7 +41,6 @@
     "node": ">=6"
   },
   "files": [
-    "index.js",
-    "README.md"
+    "index.js"
   ]
 }

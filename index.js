@@ -1,7 +1,8 @@
+const _ = require('lodash');
 const fs = require('fs');
 const childProcess = require('child_process');
 
-const validAction = ['cp'];
+const validAction = ['cp', 'rm'];
 const validBuildTrigger = ['after-emit', 'done', 'failed'];
 
 module.exports = class Filesystem {
@@ -9,9 +10,9 @@ module.exports = class Filesystem {
     if (Filesystem.hasValidOptions(options)) {
       this.action = options.action;
       this.source = options.source;
-      this.dist = options.dist;
 
       // Optional parameters
+      this.dist = options.dist || null;
       this.buildTrigger = options.buildTrigger || 'after-emit';
       this.silent = options.silent || true;
       this.verbose = !this.silent;
@@ -27,8 +28,7 @@ module.exports = class Filesystem {
 
   static hasRequiredParameters(options) {
     return Object.hasOwnProperty.call(options, 'action') &&
-      Object.hasOwnProperty.call(options, 'source') &&
-      Object.hasOwnProperty.call(options, 'dist');
+      Object.hasOwnProperty.call(options, 'source');
   }
 
   static hasValidOptions(options) {
@@ -43,9 +43,10 @@ module.exports = class Filesystem {
         validBuildTrigger.indexOf(options.buildTrigger) >= 0);
   }
 
-  copy() {
+  execute() {
     if (fs.existsSync(this.source)) {
-      const spawn = childProcess.spawnSync(this.action, [this.source, this.dist]);
+      const argumentsArray = [this.source, this.dist];
+      const spawn = childProcess.spawnSync(this.action, _.without(argumentsArray, null));
       const errorText = spawn.stderr.toString().trim();
 
       if (errorText) {
@@ -61,7 +62,7 @@ module.exports = class Filesystem {
   apply(compiler) {
     const that = this;
     compiler.plugin(this.buildTrigger, (compilation, callback) => {
-      that.copy();
+      that.execute();
       callback();
     });
   }
