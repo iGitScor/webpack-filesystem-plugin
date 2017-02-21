@@ -1,6 +1,6 @@
 {
   "name": "webpack-filesystem-plugin",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Filesystem wrapper in webpack workflow",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,8 @@
     "eslint-plugin-react": "6.9.x",
     "expect.js": "0.3.x",
     "istanbul": "0.4.x",
-    "mocha": "3.2.x"
+    "mocha": "3.2.x",
+    "webpack-mock": "0.1.x"
   },
   "engines": {
     "node": ">=6"

@@ -1,18 +1,12 @@
 const fs = require('fs');
 const Filesystem = require('../index.js');
 const expect = require('expect.js');
+const webpackMock = require('webpack-mock');
 
 let filesystemWrapper;
 const options = {
   action: 'rm',
   source: 'test/test-invalid.txt',
-};
-
-// Webpack plugin mock
-const compiler = {
-  plugin: (buildTrigger, callback) => {
-    callback(null, () => {});
-  },
 };
 
 describe('Remove function', () => {
@@ -34,6 +28,6 @@ describe('Remove function', () => {
 
   it('should apply compiler (webpack-mock)', () => {
     filesystemWrapper.source = 'test/tmp.txt';
-    filesystemWrapper.apply(compiler);
+    filesystemWrapper.apply(webpackMock);
   });
 });
